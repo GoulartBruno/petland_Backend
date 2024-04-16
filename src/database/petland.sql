@@ -3,7 +3,6 @@
 
 CREATE TABLE Users (
     user_id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    user_id PRIMARY KEY TEXT UNIQUE NOT NULL,
     name VARCHAR(255) NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
@@ -145,10 +144,4 @@ DROP TABLE Followers
 DROP TABLE Posts
 
 
-<<<<<<< HEAD
-=======
-DROP TABLE Followers
-
-
->>>>>>> 430c808efd32f3a5098b2601b55859500d2ccda3
 DROP TABLE Users
