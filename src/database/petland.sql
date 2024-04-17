@@ -16,6 +16,7 @@ CREATE TABLE Users (
 );
 
 
+
 INSERT INTO Users (user_id, name, email, password, species, breed, age, gender, bio, profile_picture)
 VALUES
 ("u001", 'Rex', 'rex@example.com', 'password123', 'Dog', 'Labrador Retriever', 3, 'Male', 'Hello! I am Rex, a very friendly Labrador Retriever.', 'rex.jpg'),
@@ -46,6 +47,7 @@ VALUES
 CREATE TABLE Posts (
     post_id TEXT PRIMARY KEY UNIQUE NOT NULL,
     user_id TEXT  NOT NULL,
+    name TEXT NOT NULL,
     text TEXT VARCHAR(1000),
     image VARCHAR(255),
     likes INTEGER DEFAULT 0 NOT NULL,
@@ -56,13 +58,16 @@ CREATE TABLE Posts (
     ON DELETE CASCADE
 );
 
-INSERT INTO Posts (post_id, user_id, text, image)
+DROP TABLE Posts
+
+
+INSERT INTO Posts (post_id, user_id, name, text, image)
 VALUES
-("p001", 'u001', 'This is the first post!', 'image1.jpg'),
-("p002", 'u002', 'Look at my cute whiskers!', 'image2.jpg'),
-("p003", 'u003', 'Just enjoying a walk in the park.', 'image3.jpg'),
-("p004", 'u004', 'Napping in the sun. 😺', 'image4.jpg'),
-("p005", 'u005', 'Playing fetch with my favorite toy!', 'image5.jpg');
+("p001", 'u001', "Rex", 'This is the first post!', 'image1.jpg'),
+("p002", 'u002', "Whiskers",'Look at my cute whiskers!', 'image2.jpg'),
+("p003", 'u003', "Max" ,'Just enjoying a walk in the park.', 'image3.jpg'),
+("p004", 'u004', "Luna", 'Napping in the sun. 😺', 'image4.jpg'),
+("p005", 'u005', "Buddy", 'Playing fetch with my favorite toy!', 'image5.jpg');
 
 
 
@@ -70,7 +75,8 @@ CREATE TABLE Comments (
     comment_id TEXT PRIMARY KEY NOT NULL,
     post_id TEXT NOT NULL,
     user_id TEXT NOT NULL,
-    text TEXT,
+    name TEXT NOT NULL,
+    text TEXT VARCHAR(300),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES Posts(post_id)
     ON UPDATE CASCADE
@@ -80,18 +86,19 @@ CREATE TABLE Comments (
     ON DELETE CASCADE
 );
 
-INSERT INTO Comments (comment_id, post_id, user_id, text)
+INSERT INTO Comments (comment_id, post_id, user_id, name, text)
 VALUES
-('c001', 'p001', 'u002', 'Great post!'),
-('c002', 'p001', 'u003', 'Love it!'),
-('c003', 'p002', 'u001', 'So adorable!'),
-('c004', 'p003', 'u004', 'Nice weather!'),
-('c005', 'p004', 'u005', 'Looks cozy!'),
-('c006', 'p005', 'u002', 'Fun times!'),
-('c007', 'p005', 'u003', 'Cute!'),
-('c008', 'p005', 'u004', 'That is a happy dog!'),
-('c009', 'p005', 'u001', 'My favorite activity!');
+('c001', 'p001', 'u002', "Whiskers", 'Great post!'),
+('c002', 'p001', 'u003', "Max",'Love it!'),
+('c003', 'p002', 'u001', "Rex",'So adorable!'),
+('c004', 'p003', 'u004', "Luna",'Nice weather!'),
+('c005', 'p004', 'u005', "Buddy", 'Looks cozy!'),
+('c006', 'p005', 'u002', "Whiskers", 'Fun times!'),
+('c007', 'p005', 'u003', "Max", 'Cute!'),
+('c008', 'p005', 'u004', "Luna", 'That is a happy dog!'),
+('c009', 'p005', 'u001', "Rex",'My favorite activity!');
 
+DROP TABLE Comments
 
 
 CREATE TABLE Likes (
@@ -104,6 +111,7 @@ CREATE TABLE Likes (
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE);
+
 
 INSERT INTO Likes (user_id, post_id, like)
 VALUES
