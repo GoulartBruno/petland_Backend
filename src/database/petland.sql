@@ -16,6 +16,8 @@ CREATE TABLE Users (
 );
 
 
+
+
 INSERT INTO Users (user_id, name, email, password, species, breed, age, gender, bio, profile_picture)
 VALUES
 ("u001", 'Rex', 'rex@example.com', 'password123', 'Dog', 'Labrador Retriever', 3, 'Male', 'Hello! I am Rex, a very friendly Labrador Retriever.', 'rex.jpg'),
@@ -46,6 +48,7 @@ VALUES
 CREATE TABLE Posts (
     post_id TEXT PRIMARY KEY UNIQUE NOT NULL,
     user_id TEXT  NOT NULL,
+    name TEXT NOT NULL VARCHAR(25)
     text TEXT VARCHAR(1000),
     image VARCHAR(255),
     likes INTEGER DEFAULT 0 NOT NULL,
@@ -55,6 +58,8 @@ CREATE TABLE Posts (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
+
+
 
 INSERT INTO Posts (post_id, user_id, text, image)
 VALUES
@@ -70,7 +75,8 @@ CREATE TABLE Comments (
     comment_id TEXT PRIMARY KEY NOT NULL,
     post_id TEXT NOT NULL,
     user_id TEXT NOT NULL,
-    text TEXT,
+    name TEXT NOT NULL
+    text TEXT VARCHAR(300),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES Posts(post_id)
     ON UPDATE CASCADE
@@ -104,6 +110,7 @@ CREATE TABLE Likes (
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE);
+
 
 INSERT INTO Likes (user_id, post_id, like)
 VALUES
