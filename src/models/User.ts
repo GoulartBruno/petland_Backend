@@ -5,13 +5,13 @@ export enum USER_ROLES {
 
 export interface TokenPayload {
   id: string;
-  name: string;
+  user_name: string;
   role: USER_ROLES;
 }
 
 export interface UserDB {
   user_id: string;
-  name: string;
+  user_name: string;
   email: string;
   password: string;
   role: USER_ROLES;
@@ -26,7 +26,7 @@ export interface UserDB {
 
 export interface UserModel {
   userId: string;
-  name: string;
+  userName: string;
   email: string;
   role: USER_ROLES;
   species: string;
@@ -41,7 +41,7 @@ export interface UserModel {
 export class User {
   constructor(
     private userId: string,
-    private name: string,
+    private userName: string,
     private email: string,
     private password: string,
     private role: USER_ROLES,
@@ -60,11 +60,11 @@ export class User {
   public setId(value: string): void {
     this.userId = value;
   }
-  public getName(): string {
-    return this.name;
+  public getUserName(): string {
+    return this.userName;
   }
-  public setname(value: string): void {
-    this.name = value;
+  public setUserName(value: string): void {
+    this.userName = value;
   }
   public getEmail(): string {
     return this.email;
@@ -127,7 +127,7 @@ export class User {
   public toDBModel(): UserDB {
     return {
       user_id: this.userId,
-      name: this.name,
+      user_name: this.userName,
       email: this.email,
       password: this.password,
       role: this.role,
@@ -144,7 +144,7 @@ export class User {
   public toBusinessModel(): UserModel {
     return {
       userId: this.userId,
-      name: this.name,
+      userName: this.userName,
       email: this.email,
       species: this.species,
       role: this.role,

@@ -7,9 +7,9 @@ export interface CreateCommentInputDTO {
   token: string;
 }
 
-export type CreatePostOutputDTO = undefined;
+export type CreateCommentOutputDTO = undefined;
 
-export const CreatePostSchema = z.object({
+export const CreateCommentSchema = z.object({
   user_id: z.string().min(1),
   post_id: z.string().min(1),
   text: z.string().min(1),

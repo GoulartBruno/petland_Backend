@@ -11,7 +11,7 @@ export class UserController {
   public signup = async (req: Request, res: Response) => {
     try {
       const input = SignupSchema.parse({
-        name: req.body.name,
+        userName: req.body.userName,
         email: req.body.email,
         password: req.body.password,
       });

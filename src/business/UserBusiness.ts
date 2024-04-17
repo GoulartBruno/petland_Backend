@@ -17,14 +17,14 @@ export class UserBusiness {
   ) {}
 
   public signup = async (input: SignupInputDTO): Promise<SignupOutputDTO> => {
-    const { name, email, password } = input;
+    const { userName, email, password } = input;
     const id = this.idGenerator.generate();
 
     const hashedPassword = await this.hashManager.hash(password);
 
     const user = new User(
       id,
-      name,
+      userName,
       email,
       hashedPassword,
       USER_ROLES.NORMAL,
@@ -41,7 +41,7 @@ export class UserBusiness {
 
     const payload: TokenPayload = {
       id: user.getId(),
-      name: user.getName(),
+      user_name: user.getUserName(),
       role: user.getRole(),
     };
     const token = this.tokenManager.createToken(payload);
@@ -61,7 +61,7 @@ export class UserBusiness {
     }
     const user = new User(
       userDB.user_id,
-      userDB.name,
+      userDB.user_name,
       userDB.email,
       userDB.password,
       userDB.role,
@@ -85,7 +85,7 @@ export class UserBusiness {
     }
     const payload: TokenPayload = {
       id: user.getId(),
-      name: user.getName(),
+      user_name: user.getUserName(),
       role: user.getRole(),
     };
 

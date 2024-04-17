@@ -4,7 +4,7 @@
 
 CREATE TABLE users (
     user_id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    user_name VARCHAR(255) NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role VARCHAR(50) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE users (
 );
 
 
-INSERT INTO users (user_id, name, email, password, species, breed, age, gender, bio, profile_picture)
+INSERT INTO users (user_id, user_name, email, password, species, breed, age, gender, bio, profile_picture)
 VALUES
 ("u001", 'Rex', 'rex@example.com', 'password123', 'Dog', 'Labrador Retriever', 3, 'Male', 'Hello! I am Rex, a very friendly Labrador Retriever.', 'rex.jpg'),
 ("u002", 'Whiskers', 'whiskers@example.com', 'password456', 'Cat', 'Siamese', 2, 'Female', 'Hi! I am Whiskers, a very playful Siamese cat.', 'whiskers.jpg'),
@@ -47,7 +47,7 @@ VALUES
 
 CREATE TABLE posts (
     post_id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    user_id TEXT  NOT NULL,
+    user_id TEXT NOT NULL,
     text TEXT VARCHAR(1000),
     image VARCHAR(255),
     likes INTEGER DEFAULT 0 NOT NULL,
