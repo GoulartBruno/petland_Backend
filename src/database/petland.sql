@@ -1,11 +1,13 @@
--- Active: 1713257716133@@127.0.0.1@3306
+-- Active: 1713346683312@@127.0.0.1@3306
 
 
-CREATE TABLE Users (
+
+CREATE TABLE users (
     user_id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    user_name VARCHAR(255) NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
+    role VARCHAR(50) NOT NULL,
     species VARCHAR(100),
     breed VARCHAR(100),
     age INT,
@@ -16,7 +18,7 @@ CREATE TABLE Users (
 );
 
 
-INSERT INTO Users (user_id, name, email, password, species, breed, age, gender, bio, profile_picture)
+INSERT INTO users (user_id, user_name, email, password, species, breed, age, gender, bio, profile_picture)
 VALUES
 ("u001", 'Rex', 'rex@example.com', 'password123', 'Dog', 'Labrador Retriever', 3, 'Male', 'Hello! I am Rex, a very friendly Labrador Retriever.', 'rex.jpg'),
 ("u002", 'Whiskers', 'whiskers@example.com', 'password456', 'Cat', 'Siamese', 2, 'Female', 'Hi! I am Whiskers, a very playful Siamese cat.', 'whiskers.jpg'),
@@ -26,7 +28,7 @@ VALUES
 
 
 
-CREATE TABLE Followers (
+CREATE TABLE followers (
     follower_id TEXT PRIMARY KEY UNIQUE NOT NULL,
     user_id  TEXT UNIQUE NOT NULL,
     followed_back BOOLEAN,
@@ -35,7 +37,7 @@ CREATE TABLE Followers (
     ON DELETE CASCADE
 );
 
-INSERT INTO Followers (follower_id, user_id, followed_back)
+INSERT INTO followers (follower_id, user_id, followed_back)
 VALUES
 ("u001", "u002", TRUE), 
 ("u003", "u001", TRUE), 
@@ -43,20 +45,21 @@ VALUES
 
 
 
-CREATE TABLE Posts (
+CREATE TABLE posts (
     post_id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    user_id TEXT  NOT NULL,
     text TEXT VARCHAR(1000),
-    image VARCHAR(255),
+    image TEXT VARCHAR(255),
     likes INTEGER DEFAULT 0 NOT NULL,
     created_at TEXT DEFAULT (DATETIME()) NOT NULL,
     updated_at TEXT DEFAULT (DATETIME()) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    user_id TEXT ,
+    user_name TEXT ,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
 
-INSERT INTO Posts (post_id, user_id, text, image)
+INSERT INTO posts (post_id, user_id, text, image)
 VALUES
 ("p001", 'u001', 'This is the first post!', 'image1.jpg'),
 ("p002", 'u002', 'Look at my cute whiskers!', 'image2.jpg'),
@@ -66,7 +69,7 @@ VALUES
 
 
 
-CREATE TABLE Comments (
+CREATE TABLE comments (
     comment_id TEXT PRIMARY KEY NOT NULL,
     post_id TEXT NOT NULL,
     user_id TEXT NOT NULL,
@@ -80,7 +83,7 @@ CREATE TABLE Comments (
     ON DELETE CASCADE
 );
 
-INSERT INTO Comments (comment_id, post_id, user_id, text)
+INSERT INTO comments (comment_id, post_id, user_id, text)
 VALUES
 ('c001', 'p001', 'u002', 'Great post!'),
 ('c002', 'p001', 'u003', 'Love it!'),
@@ -94,7 +97,7 @@ VALUES
 
 
 
-CREATE TABLE Likes (
+CREATE TABLE likes (
     user_id TEXT NOT NULL,
     post_id TEXT NOT NULL,
     like INTEGER NOT NULL,
@@ -105,7 +108,7 @@ CREATE TABLE Likes (
     ON UPDATE CASCADE
     ON DELETE CASCADE);
 
-INSERT INTO Likes (user_id, post_id, like)
+INSERT INTO likes (user_id, post_id, like)
 VALUES
 ('u001', 'p002', 1),
 ('u001', 'p003', 1),
@@ -117,31 +120,31 @@ VALUES
 
 
 
-UPDATE Posts
+UPDATE posts
 SET likes = 2
 WHERE post_id = 'p001';
 
 
-UPDATE Posts
+UPDATE posts
 SET likes = 3
 WHERE post_id = 'p002';
 
 
-UPDATE Posts
+UPDATE posts
 SET likes = 1
 WHERE post_id = 'p003';
 
 
 
-DROP TABLE Likes
+DROP TABLE likes
 
-DROP TABLE Comments
-
-
-DROP TABLE Followers
+DROP TABLE comments
 
 
-DROP TABLE Posts
+DROP TABLE followers
 
 
-DROP TABLE Users
+DROP TABLE posts
+
+
+DROP TABLE users
