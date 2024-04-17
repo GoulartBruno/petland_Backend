@@ -1,6 +1,6 @@
 import { BaseDatabase } from "./BaseDatabase";
 
 export class PostDatabase extends BaseDatabase {
-  public static TABLE_POSTS = "Posts";
-  public static TABLE_LIKES = "Likes";
+  public static TABLE_POSTS = "posts";
+  public static TABLE_LIKES = "likes";
 }
