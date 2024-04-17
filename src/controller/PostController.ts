@@ -10,7 +10,8 @@ export class PostController {
   public createPost = async (req: Request, res: Response) => {
     try {
       const input = CreatePostSchema.parse({
-        name: req.body.name,
+        text: req.body.text,
+        image: req.body.image,
         token: req.headers.authorization,
       });
 

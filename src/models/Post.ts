@@ -1,34 +1,30 @@
 export interface PostDB {
   post_id: string;
-  user_id: string;
-  name: string;
   text: string;
   image: string;
   likes: number;
   created_at: string;
   updated_at: string;
+  user_id: string;
+  user_name: string;
 }
 
 export interface PostModel {
   post_id: string;
-  user_id: string;
-  name: string;
   text: string;
   image: string;
   likes: number;
   created_at: string;
   updated_at: string;
   creator: {
-    post_id: string;
-    name: string;
+    creator_id: string;
+    creator_name: string;
   };
 }
 
 export class Post {
   constructor(
     private postId: string,
-    private userId: string,
-    private name: string,
     private text: string,
     private image: string,
     private likes: number,
@@ -43,20 +39,6 @@ export class Post {
   }
   public setPostId(value: string): void {
     this.postId = value;
-  }
-
-  public getUserId(): string {
-    return this.userId;
-  }
-  public setUserId(value: string): void {
-    this.userId = value;
-  }
-
-  public getName(): string {
-    return this.name;
-  }
-  public setName(value: string): void {
-    this.name = value;
   }
 
   public getText(): string {
@@ -94,13 +76,12 @@ export class Post {
     this.updatedAt = value;
   }
 
-  public getCreatorIdt(): string {
+  public getCreatorId(): string {
     return this.creatorId;
   }
   public setCreatorId(value: string): void {
     this.creatorId = value;
   }
-
   public getCreatorName(): string {
     return this.creatorName;
   }
@@ -111,29 +92,27 @@ export class Post {
   public toDBModel(): PostDB {
     return {
       post_id: this.postId,
-      user_id: this.userId,
-      name: this.name,
       text: this.text,
       image: this.image,
       likes: this.likes,
       created_at: this.createdAt,
       updated_at: this.updatedAt,
+      user_id: this.creatorId,
+      user_name: this.creatorName,
     };
   }
 
   public toBusinessModel(): PostModel {
     return {
       post_id: this.postId,
-      user_id: this.userId,
-      name: this.name,
       text: this.text,
       image: this.image,
       likes: this.likes,
       created_at: this.createdAt,
       updated_at: this.updatedAt,
       creator: {
-        post_id: this.creatorId,
-        name: this.creatorName,
+        creator_id: this.creatorId,
+        creator_name: this.creatorName,
       },
     };
   }

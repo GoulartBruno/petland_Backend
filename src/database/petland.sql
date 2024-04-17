@@ -47,13 +47,14 @@ VALUES
 
 CREATE TABLE posts (
     post_id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    user_id TEXT NOT NULL,
     text TEXT VARCHAR(1000),
-    image VARCHAR(255),
+    image TEXT VARCHAR(255),
     likes INTEGER DEFAULT 0 NOT NULL,
     created_at TEXT DEFAULT (DATETIME()) NOT NULL,
     updated_at TEXT DEFAULT (DATETIME()) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    user_id TEXT ,
+    user_name TEXT ,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );

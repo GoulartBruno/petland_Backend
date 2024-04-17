@@ -10,8 +10,8 @@ export type CreatePostOutputDTO = undefined;
 
 export const CreatePostSchema = z
   .object({
-    text: z.string().optional(),
-    image: z.string(),
+    text: z.string().min(1),
+    image: z.string().min(1),
     token: z.string().min(1),
   })
   .transform((data) => data as CreatePostInputDTO);
