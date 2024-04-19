@@ -5,6 +5,7 @@ import { BaseError } from "../errors/BaseError";
 import { CreatePostSchema } from "../dtos/post/createPost";
 import { GetPostSchema } from "../dtos/post/getPost.dto";
 import { EditPostSchema } from "../dtos/comment/editComment.dto";
+import { DeletePostSchema } from "../dtos/post/deletePost.dto";
 
 export class PostController {
   constructor(private postBusiness: PostBusiness) {}
@@ -64,6 +65,29 @@ export class PostController {
       });
 
       const output = await this.postBusiness.editPost(input);
+
+      res.status(200).send(output);
+    } catch (error) {
+      console.log(error);
+
+      if (error instanceof ZodError) {
+        res.status(400).send(error.issues);
+      } else if (error instanceof BaseError) {
+        res.status(error.statusCode).send(error.message);
+      } else {
+        res.status(500).send("Unexpected Error");
+      }
+    }
+  };
+
+  public deletePost = async (req: Request, res: Response) => {
+    try {
+      const input = DeletePostSchema.parse({
+        token: req.headers.authorization,
+        idToDelete: req.params.id,
+      });
+
+      const output = await this.postBusiness.deletePost(input);
 
       res.status(200).send(output);
     } catch (error) {

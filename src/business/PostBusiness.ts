@@ -4,12 +4,17 @@ import {
   CreatePostInputDTO,
   CreatePostOutputDTO,
 } from "../dtos/post/createPost";
+import {
+  DeletePostInputDTO,
+  DeletePostOutputDTO,
+} from "../dtos/post/deletePost.dto";
 import { EditPostInputDTO, EditPostOutputDTO } from "../dtos/post/editPost.dto";
 import { GetPostInputDTO, GetPostOutputDTO } from "../dtos/post/getPost.dto";
 import { ForbiddenError } from "../errors/ForbiddenError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
 import { Post } from "../models/Post";
+import { USER_ROLES } from "../models/User";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
 
@@ -121,6 +126,38 @@ export class PostBusiness {
     await this.postDatabase.updatePost(updatePostDB);
 
     const output: EditPostOutputDTO = undefined;
+
+    return output;
+  };
+
+  public deletePost = async (
+    input: DeletePostInputDTO
+  ): Promise<DeletePostOutputDTO> => {
+    const { token, idToDelete } = input;
+
+    const payload = this.tokenManager.getPayload(token);
+
+    if (!payload) {
+      throw new UnauthorizedError();
+    }
+
+    const postDB = await this.postDatabase.findPostById(idToDelete);
+
+    if (!postDB) {
+      throw new NotFoundError("Post with this id does not exist.");
+    }
+
+    if (payload.role !== USER_ROLES.ADMIN) {
+      if (payload.id !== postDB.user_id) {
+        throw new ForbiddenError(
+          "Only those who created the post can edit it."
+        );
+      }
+    }
+
+    await this.postDatabase.deletePostById(idToDelete);
+
+    const output: DeletePostOutputDTO = undefined;
 
     return output;
   };

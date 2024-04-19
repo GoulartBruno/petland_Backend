@@ -75,10 +75,10 @@ CREATE TABLE comments (
     user_id TEXT NOT NULL,
     text TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES Posts(post_id)
+    FOREIGN KEY (post_id) REFERENCES posts(post_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
