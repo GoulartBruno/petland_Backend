@@ -4,9 +4,8 @@ export interface PostDB {
   image: string;
   likes: number;
   created_at: string;
-  updated_at: string;
+  update_at: string;
   user_id: string;
-  user_name: string;
 }
 
 export interface PostModel {
@@ -15,11 +14,28 @@ export interface PostModel {
   image: string;
   likes: number;
   created_at: string;
-  updated_at: string;
+  update_at: string;
   creator: {
     creator_id: string;
     creator_name: string;
   };
+}
+
+export interface PostDBWithCreatorName {
+  post_id: string;
+  text: string;
+  image: string;
+  likes: number;
+  created_at: string;
+  update_at: string;
+  user_id: string;
+  user_name: string;
+}
+
+export interface LikeDB {
+  user_id: string;
+  post_id: string;
+  like: number;
 }
 
 export class Post {
@@ -29,7 +45,7 @@ export class Post {
     private image: string,
     private likes: number,
     private createdAt: string,
-    private updatedAt: string,
+    private updateAt: string,
     private creatorId: string,
     private creatorName: string
   ) {}
@@ -69,11 +85,11 @@ export class Post {
     this.createdAt = value;
   }
 
-  public getUpdatedAt(): string {
-    return this.updatedAt;
+  public getUpdateAt(): string {
+    return this.updateAt;
   }
-  public setUpdatedAt(value: string): void {
-    this.updatedAt = value;
+  public setUpdateAt(value: string): void {
+    this.updateAt = value;
   }
 
   public getCreatorId(): string {
@@ -96,9 +112,8 @@ export class Post {
       image: this.image,
       likes: this.likes,
       created_at: this.createdAt,
-      updated_at: this.updatedAt,
+      update_at: this.updateAt,
       user_id: this.creatorId,
-      user_name: this.creatorName,
     };
   }
 
@@ -109,7 +124,7 @@ export class Post {
       image: this.image,
       likes: this.likes,
       created_at: this.createdAt,
-      updated_at: this.updatedAt,
+      update_at: this.updateAt,
       creator: {
         creator_id: this.creatorId,
         creator_name: this.creatorName,

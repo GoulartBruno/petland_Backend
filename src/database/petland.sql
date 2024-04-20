@@ -1,3 +1,4 @@
+-- Active: 1713378336196@@127.0.0.1@3306
 
 
 
@@ -50,7 +51,7 @@ CREATE TABLE posts (
     image TEXT VARCHAR(255),
     likes INTEGER DEFAULT 0 NOT NULL,
     created_at TEXT DEFAULT (DATETIME()) NOT NULL,
-    updated_at TEXT DEFAULT (DATETIME()) NOT NULL,
+    update_at TEXT DEFAULT (DATETIME()) NOT NULL,
     user_id TEXT ,
     user_name TEXT ,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -74,10 +75,10 @@ CREATE TABLE comments (
     user_id TEXT NOT NULL,
     text TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES Posts(post_id)
+    FOREIGN KEY (post_id) REFERENCES posts(post_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
