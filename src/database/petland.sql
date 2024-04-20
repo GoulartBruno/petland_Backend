@@ -61,11 +61,8 @@ CREATE TABLE posts (
 
 INSERT INTO posts (post_id, user_id, text, image)
 VALUES
-("p001", 'u001', 'This is the first post!', 'image1.jpg'),
-("p002", 'u002', 'Look at my cute whiskers!', 'image2.jpg'),
-("p003", 'u003', 'Just enjoying a walk in the park.', 'image3.jpg'),
-("p004", 'u004', 'Napping in the sun. 😺', 'image4.jpg'),
-("p005", 'u005', 'Playing fetch with my favorite toy!', 'image5.jpg');
+("p006", 'bf34179b-3079-4984-aa72-dbcf135d87c0', 'This is the first post!', 'image1.jpg')
+
 
 
 
@@ -100,23 +97,17 @@ VALUES
 CREATE TABLE likes (
     user_id TEXT NOT NULL,
     post_id TEXT NOT NULL,
-    like INTEGER NOT NULL,
-    FOREIGN KEY (post_id) REFERENCES Posts(post_id)
+    like BOOLEAN NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE);
 
 INSERT INTO likes (user_id, post_id, like)
 VALUES
-('u001', 'p002', 1),
-('u001', 'p003', 1),
-('u002', 'p001', 1),
-('u002', 'p004', 1),
-('u002', 'p005', 1),
-('u003', 'p002', 1);
-
+('6b63e7f4-9fda-46d3-8b88-d6cf532950ae', 'p006',TRUE)
 
 
 

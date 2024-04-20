@@ -25,5 +25,4 @@ app.get("/ping", (req, res) => {
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/followers", followerRouter);
-app.use("/likes", likeRouter);
 app.use("/comment", commentRouter);

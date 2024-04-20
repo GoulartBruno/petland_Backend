@@ -38,6 +38,10 @@ export interface LikeDB {
   like: number;
 }
 
+export enum POST_LIKE {
+  ALREADY_LIKED = "ALREADY LIKED ",
+}
+
 export class Post {
   constructor(
     private postId: string,
@@ -77,6 +81,14 @@ export class Post {
   public setLikes(value: number): void {
     this.likes = value;
   }
+
+  public addLike = (): void => {
+    this.likes++;
+  };
+
+  public removeLike = (): void => {
+    this.likes--;
+  };
 
   public getCreatedAt(): string {
     return this.createdAt;

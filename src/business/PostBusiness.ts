@@ -14,7 +14,7 @@ import { LikePostInputDTO, LikePostOutputDTO } from "../dtos/post/likePost.dto";
 import { ForbiddenError } from "../errors/ForbiddenError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
-import { LikeDB, Post } from "../models/Post";
+import { LikeDB, POST_LIKE, Post } from "../models/Post";
 import { USER_ROLES } from "../models/User";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
@@ -181,6 +181,14 @@ export class PostBusiness {
       throw new NotFoundError("Post with this id does not exist");
     }
 
+    const likeDB: LikeDB = {
+      user_id: payload.id,
+      post_id: postId,
+      like: like ? 1 : 0,
+    };
+
+    const likeExists = await this.postDatabase.findLike(likeDB);
+
     const post = new Post(
       postDBwithCreatorName.post_id,
       postDBwithCreatorName.text,
@@ -192,12 +200,18 @@ export class PostBusiness {
       postDBwithCreatorName.user_name
     );
 
-    const likeSQlite = like ? 1 : 0;
+    if (like) {
+      post.addLike();
+      await this.postDatabase.insertLike(likeDB);
+    } else {
+      post.removeLike();
+      await this.postDatabase.removeLike(likeDB);
+    }
 
-    const likeDB: LikeDB = {
-      user_id: payload.id,
-      post_id: postId,
-      like: likeSQlite,
-    };
+    await this.postDatabase.updatePost(post.toDBModel());
+
+    const output: LikePostOutputDTO = undefined;
+
+    return output;
   };
 }

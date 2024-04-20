@@ -1,5 +1,11 @@
-import { PostDB, PostDBWithCreatorName } from "../models/Post";
+import {
+  LikeDB,
+  POST_LIKE,
+  PostDB,
+  PostDBWithCreatorName,
+} from "../models/Post";
 import { BaseDatabase } from "./BaseDatabase";
+import { LikeDatabase } from "./LikeDatabase";
 import { UserDatabase } from "./UserDatabase";
 
 export class PostDatabase extends BaseDatabase {
@@ -79,5 +85,36 @@ export class PostDatabase extends BaseDatabase {
       .where({ post_id: id });
 
     return result as PostDBWithCreatorName | undefined;
+  };
+
+  public findLike = async (likeDB: LikeDB): Promise<POST_LIKE | undefined> => {
+    const [result] = await BaseDatabase.connection(PostDatabase.TABLE_LIKES)
+      .select()
+      .where({
+        user_id: likeDB.user_id,
+        post_id: likeDB.post_id,
+      });
+
+    return result as POST_LIKE | undefined;
+  };
+
+  public removeLike = async (likeDB: LikeDB): Promise<void> => {
+    await BaseDatabase.connection(PostDatabase.TABLE_LIKES).delete().where({
+      user_id: likeDB.user_id,
+      post_id: likeDB.post_id,
+    });
+  };
+
+  public updateLike = async (likeDB: LikeDB): Promise<void> => {
+    await BaseDatabase.connection(PostDatabase.TABLE_LIKES)
+      .update(likeDB)
+      .where({
+        user_id: likeDB.user_id,
+        post_id: likeDB.post_id,
+      });
+  };
+
+  public insertLike = async (likeDB: LikeDB): Promise<void> => {
+    await BaseDatabase.connection(PostDatabase.TABLE_LIKES).insert(likeDB);
   };
 }
