@@ -5,7 +5,6 @@ import {
   PostDBWithCreatorName,
 } from "../models/Post";
 import { BaseDatabase } from "./BaseDatabase";
-import { LikeDatabase } from "./LikeDatabase";
 import { UserDatabase } from "./UserDatabase";
 
 export class PostDatabase extends BaseDatabase {

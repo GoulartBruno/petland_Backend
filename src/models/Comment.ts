@@ -2,7 +2,6 @@ export interface CommentDB {
   comment_id: string;
   post_id: string;
   user_id: string;
-  name: string;
   text: string;
   created_at: string;
 }
@@ -11,9 +10,21 @@ export interface CommentModel {
   commentId: string;
   postId: string;
   userId: string;
-  name: string;
   text: string;
   createdAt: string;
+  creator: {
+    creator_id: string;
+    creator_name: string;
+  };
+}
+
+export interface CommentDBWithCreatorName {
+  comment_id: string;
+  post_id: string;
+  user_id: string;
+  user_name: string;
+  created_at: string;
+  update_at: string;
 }
 
 export class Comment {
@@ -21,7 +32,7 @@ export class Comment {
     private commentId: string,
     private postId: string,
     private userId: string,
-    private name: string,
+    private userName: string,
     private text: string,
     private createdAt: string
   ) {}
@@ -44,31 +55,30 @@ export class Comment {
   public setUserId(value: string): void {
     this.userId = value;
   }
-  public getName(): string {
-    return this.name;
+  public getUsername(): string {
+    return this.userName;
   }
-  public setName(value: string): void {
-    this.name = value;
+  public setUsername(value: string): void {
+    this.userName = value;
   }
   public getText(): string {
     return this.text;
   }
-  public setText(): string {
-    return this.text;
+  public setText(value: string): void {
+    this.text = value;
   }
-  public getCreatedAt(value: string): void {
-    this.createdAt = value;
-  }
-  public setCreatedAt(): string {
+  public getCreatedAt(): string {
     return this.createdAt;
   }
+  public setCreatedAt(value: string): void {
+    this.createdAt = value;
+  }
 
-  public toDBModel(): CommentDB {
+  public toCommentDBModel(): CommentDB {
     return {
       comment_id: this.commentId,
       post_id: this.postId,
       user_id: this.userId,
-      name: this.name,
       text: this.text,
       created_at: this.createdAt,
     };
@@ -79,9 +89,12 @@ export class Comment {
       commentId: this.commentId,
       postId: this.postId,
       userId: this.userId,
-      name: this.name,
       text: this.text,
       createdAt: this.createdAt,
+      creator: {
+        creator_id: this.userId,
+        creator_name: this.userName,
+      },
     };
   }
 }
