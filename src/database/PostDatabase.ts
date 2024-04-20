@@ -55,4 +55,29 @@ export class PostDatabase extends BaseDatabase {
       .delete()
       .where({ post_id: id });
   };
+
+  public findPostWithCreatorNameById = async (
+    id: string
+  ): Promise<PostDBWithCreatorName | undefined> => {
+    const [result] = await BaseDatabase.connection(PostDatabase.TABLE_POSTS)
+      .select(
+        `${PostDatabase.TABLE_POSTS}.post_id`,
+        `${PostDatabase.TABLE_POSTS}.text`,
+        `${PostDatabase.TABLE_POSTS}.image`,
+        `${PostDatabase.TABLE_POSTS}.likes`,
+        `${PostDatabase.TABLE_POSTS}.created_at`,
+        `${PostDatabase.TABLE_POSTS}.update_at`,
+        `${PostDatabase.TABLE_POSTS}.user_id`,
+        `${UserDatabase.TABLE_USERS}.user_name`
+      )
+      .join(
+        `${UserDatabase.TABLE_USERS}`,
+        `${PostDatabase.TABLE_POSTS}.user_id`,
+        "=",
+        `${UserDatabase.TABLE_USERS}.user_id`
+      )
+      .where({ post_id: id });
+
+    return result as PostDBWithCreatorName | undefined;
+  };
 }

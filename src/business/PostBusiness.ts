@@ -10,10 +10,11 @@ import {
 } from "../dtos/post/deletePost.dto";
 import { EditPostInputDTO, EditPostOutputDTO } from "../dtos/post/editPost.dto";
 import { GetPostInputDTO, GetPostOutputDTO } from "../dtos/post/getPost.dto";
+import { LikePostInputDTO, LikePostOutputDTO } from "../dtos/post/likePost.dto";
 import { ForbiddenError } from "../errors/ForbiddenError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
-import { Post } from "../models/Post";
+import { LikeDB, Post } from "../models/Post";
 import { USER_ROLES } from "../models/User";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
@@ -160,5 +161,43 @@ export class PostBusiness {
     const output: DeletePostOutputDTO = undefined;
 
     return output;
+  };
+
+  public likePost = async (
+    input: LikePostInputDTO
+  ): Promise<LikePostOutputDTO> => {
+    const { postId, token, like } = input;
+
+    const payload = this.tokenManager.getPayload(token);
+
+    if (!payload) {
+      throw new UnauthorizedError();
+    }
+
+    const postDBwithCreatorName =
+      await this.postDatabase.findPostWithCreatorNameById(postId);
+
+    if (!postDBwithCreatorName) {
+      throw new NotFoundError("Post with this id does not exist");
+    }
+
+    const post = new Post(
+      postDBwithCreatorName.post_id,
+      postDBwithCreatorName.text,
+      postDBwithCreatorName.image,
+      postDBwithCreatorName.likes,
+      postDBwithCreatorName.created_at,
+      postDBwithCreatorName.update_at,
+      postDBwithCreatorName.user_id,
+      postDBwithCreatorName.user_name
+    );
+
+    const likeSQlite = like ? 1 : 0;
+
+    const likeDB: LikeDB = {
+      user_id: payload.id,
+      post_id: postId,
+      like: likeSQlite,
+    };
   };
 }
