@@ -8,7 +8,7 @@ export interface EditCommentInputDTO {
 
 export type EditCommentOutputDTO = undefined;
 
-export const EditPostSchema = z.object({
+export const EditCommentSchema = z.object({
   text: z.string().min(1),
   token: z.string().min(1),
   idToEdit: z.string().min(1),
