@@ -89,6 +89,7 @@ export class PostBusiness {
 
     return output;
   };
+
   public editPost = async (
     input: EditPostInputDTO
   ): Promise<EditPostOutputDTO> => {
