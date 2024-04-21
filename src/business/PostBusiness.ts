@@ -118,7 +118,7 @@ export class PostBusiness {
       postDB.likes,
       postDB.created_at,
       postDB.update_at,
-      postDB.user_id,
+      payload.id,
       payload.user_name
     );
 

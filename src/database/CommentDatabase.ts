@@ -18,25 +18,36 @@ export class CommentDatabase extends BaseDatabase {
     const result = await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
       .select(
         `${CommentDatabase.TABLE_COMMENTS}.comment_id`,
-        `${PostDatabase.TABLE_POSTS}.post_id`,
+        `${CommentDatabase.TABLE_COMMENTS}.post_id`,
         `${CommentDatabase.TABLE_COMMENTS}.text`,
         `${CommentDatabase.TABLE_COMMENTS}.created_at`,
-        `${PostDatabase.TABLE_POSTS}.user_id`,
+        `${CommentDatabase.TABLE_COMMENTS}.user_id`,
         `${UserDatabase.TABLE_USERS}.user_name`
       )
       .join(
-        `${PostDatabase.TABLE_POSTS}`,
-        `${CommentDatabase.TABLE_COMMENTS}.post_id`,
-        "=",
-        `${PostDatabase.TABLE_POSTS}.post_id`
-      )
-      .join(
         `${UserDatabase.TABLE_USERS}`,
-        `${PostDatabase.TABLE_POSTS}.user_id`,
+        `${CommentDatabase.TABLE_COMMENTS}.user_id`,
         "=",
         `${UserDatabase.TABLE_USERS}.user_id`
       );
 
     return result as CommentDBWithCreatorName[];
+  };
+
+  public findCommentById = async (
+    comment_id: string
+  ): Promise<CommentDB | undefined> => {
+    const [result] = await BaseDatabase.connection(
+      CommentDatabase.TABLE_COMMENTS
+    )
+      .select()
+      .where({ comment_id });
+
+    return result as CommentDB | undefined;
+  };
+  public updateComment = async (commentDB: CommentDB): Promise<void> => {
+    await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
+      .update(commentDB)
+      .where({ post_id: commentDB.comment_id });
   };
 }

@@ -73,7 +73,7 @@ export class Comment {
     this.createdAt = value;
   }
 
-  public toCommentDBModel(): CommentDB {
+  public toDBModel(): CommentDB {
     return {
       comment_id: this.commentId,
       post_id: this.postId,

@@ -4,9 +4,9 @@ import { ZodError } from "zod";
 import { BaseError } from "../errors/BaseError";
 import { CreatePostSchema } from "../dtos/post/createPost";
 import { GetPostSchema } from "../dtos/post/getPost.dto";
-import { EditPostSchema } from "../dtos/comment/editComment.dto";
 import { DeletePostSchema } from "../dtos/post/deletePost.dto";
 import { LikePostSchema } from "../dtos/post/likePost.dto";
+import { EditPostSchema } from "../dtos/post/editPost.dto";
 
 export class PostController {
   constructor(private postBusiness: PostBusiness) {}

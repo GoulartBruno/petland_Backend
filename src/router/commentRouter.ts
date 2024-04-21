@@ -18,3 +18,4 @@ const commentController = new CommentController(
 
 postRouter.post("/:postId/comments", commentController.createComment);
 commentRouter.get("/", commentController.getComments);
+commentRouter.put("/:id", commentController.editComment);

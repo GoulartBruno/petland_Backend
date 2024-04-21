@@ -11,6 +11,12 @@ import {
   GetCommentInputDTO,
   GetCommentOutputDTO,
 } from "../dtos/comment/getComment.dto";
+import {
+  EditCommentInputDTO,
+  EditCommentOutputDTO,
+} from "../dtos/comment/editComment.dto";
+import { NotFoundError } from "../errors/NotFoundError";
+import { ForbiddenError } from "../errors/ForbiddenError";
 
 export class CommentBusiness {
   constructor(
@@ -35,13 +41,13 @@ export class CommentBusiness {
     const comment = new Comment(
       id,
       post_id,
-      payload.id,
-      payload.user_name,
       text,
-      new Date().toISOString()
+      new Date().toISOString(),
+      payload.id,
+      payload.user_name
     );
 
-    const commentDB = comment.toCommentDBModel();
+    const commentDB = comment.toDBModel();
 
     await this.commentDatabase.insertComment(commentDB);
 
@@ -77,6 +83,48 @@ export class CommentBusiness {
     );
 
     const output: GetCommentOutputDTO = comments;
+
+    return output;
+  };
+
+  public editComment = async (
+    input: EditCommentInputDTO
+  ): Promise<EditCommentOutputDTO> => {
+    const { text, token, idToEdit } = input;
+
+    const payload = this.tokenManager.getPayload(token);
+
+    if (!payload) {
+      throw new UnauthorizedError();
+    }
+
+    const commentDB = await this.commentDatabase.findCommentById(idToEdit);
+
+    if (!commentDB) {
+      throw new NotFoundError("Comment with this id does not exist.");
+    }
+
+    if (payload.id !== commentDB.user_id) {
+      throw new ForbiddenError(
+        "Only those who created the comment can edit it."
+      );
+    }
+
+    const comment = new Comment(
+      commentDB.comment_id,
+      commentDB.post_id,
+      commentDB.text,
+      commentDB.created_at,
+      payload.id,
+      payload.user_name
+    );
+
+    comment.setText(text);
+
+    const updateCommentDB = comment.toDBModel();
+    await this.commentDatabase.updateComment(updateCommentDB);
+
+    const output: EditCommentOutputDTO = undefined;
 
     return output;
   };
