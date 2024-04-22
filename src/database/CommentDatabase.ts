@@ -48,6 +48,6 @@ export class CommentDatabase extends BaseDatabase {
   public updateComment = async (commentDB: CommentDB): Promise<void> => {
     await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
       .update(commentDB)
-      .where({ post_id: commentDB.comment_id });
+      .where({ comment_id: commentDB.comment_id });
   };
 }
